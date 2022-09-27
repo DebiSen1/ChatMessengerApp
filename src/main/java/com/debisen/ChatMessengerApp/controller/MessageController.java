@@ -12,10 +12,23 @@ import com.debisen.ChatMessengerApp.POJO.Message;
 public class MessageController {
 
 	//to register a user based on username he/she provides
-	@MessageMapping("/chat.adduser")
+	@MessageMapping("/chat.addUser")
 	@SendTo("msg/public")
 	public Message addUser(@Payload Message message, SimpMessageHeaderAccessor headerAccessor) {
-		headerAccessor.getSessionAttributes().put("username", message.getFromWhom());
+		try {
+			headerAccessor.getSessionAttributes().put("username", message.getFromWhom());
+			return message;
+		}
+		catch(Exception ex) {
+			System.out.println("error caused"); //for demo purpose
+			return message;
+		}
+	}
+	
+	
+	@MessageMapping("/chat.sendMessage")
+	@SendTo("msg/public")
+	public Message sendMessage(@Payload Message message) {
 		return message;
 	}
 }
